@@ -16,13 +16,12 @@ public:
 	// Sets default values for this component's properties
 	UPatrolRouteComponent();
 
-protected:
-	// Called when the game starts
-	virtual void BeginPlay() override;
+	TArray<AActor*> GetPatrolPoints();
 
-public:	
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+private:
+
+	UPROPERTY(EditInstanceOnly, Category = "Patrol Route")
+	TArray<AActor*> PatrolPoints;
 
 		
 };
