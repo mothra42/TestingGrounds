@@ -18,8 +18,9 @@ EBTNodeResult::Type UChooseNextWaypoint::ExecuteTask(UBehaviorTreeComponent& Own
 
 	auto PatrolRouteComponent = ControlledPawn->FindComponentByClass<UPatrolRouteComponent>();
 	if (!ensure(PatrolRouteComponent)) { return EBTNodeResult::Failed; }
-	//Warn about empty patrol route;
+	
 	auto PatrolPoints = PatrolRouteComponent->GetPatrolPoints();
+	//Warn about empty patrol route;
 	if (PatrolPoints.Num() == 0)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("A guard is missing patrol points"));
