@@ -29,7 +29,6 @@ ABallProjectile::ABallProjectile()
 
 	// Die after 3 seconds by default
 	InitialLifeSpan = 10.0f;
-	UE_LOG(LogTemp, Warning, TEXT("Ball location is %s"), *GetActorLocation().ToString());
 }
 
 void ABallProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)

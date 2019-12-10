@@ -25,21 +25,6 @@ AGun::AGun()
 
 }
 
-// Called when the game starts or when spawned
-void AGun::BeginPlay()
-{
-	Super::BeginPlay();
-
-}
-
-// Called every frame
-void AGun::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-}
-
-
 void AGun::OnFire()
 {
 	// try and fire a projectile
@@ -51,8 +36,6 @@ void AGun::OnFire()
 			const FRotator SpawnRotation = FP_MuzzleLocation->GetComponentRotation();
 			// MuzzleOffset is in camera space, so transform it to world space before offsetting from the character location to find the final muzzle position
 			const FVector SpawnLocation = FP_MuzzleLocation->GetComponentLocation();
-			UE_LOG(LogTemp, Warning, TEXT("MuzzleLocation is %s"), *SpawnLocation.ToString());
-			UE_LOG(LogTemp, Warning, TEXT("Gun Location is %s"), *FP_Gun->GetComponentLocation().ToString());
 
 			UWorld* const World = GetWorld();
 			if (World != NULL)
@@ -64,14 +47,15 @@ void AGun::OnFire()
 	}
 
 	// try and play the sound if specified
-	if (FireSound != NULL)
+	if (FireSound != nullptr)
 	{
 		UGameplayStatics::PlaySoundAtLocation(this, FireSound, GetActorLocation());
 	}
 
 	//try and play a firing animation if specified
-	if (FireAnimation != NULL)
+	if (FireAnimation != nullptr && AnimInstance != nullptr)
 	{
 		AnimInstance->Montage_Play(FireAnimation, 1.f);
 	}
+	return;
 }

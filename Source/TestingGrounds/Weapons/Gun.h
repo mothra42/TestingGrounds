@@ -40,10 +40,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 	class UAnimInstance* AnimInstance;
 
+	UFUNCTION(BlueprintCallable, Category = "Firing")
 	void OnFire();
-
-	virtual void BeginPlay() override;
-
-	virtual void Tick(float DeltaSeconds) override;
-
 };
