@@ -37,6 +37,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Weapon)
 	void PullTrigger();
 
+	void PickupWeapon();
+
 private:
 	//Pawn Mesh, 1st person view
 	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)

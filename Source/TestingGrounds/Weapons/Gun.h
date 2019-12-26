@@ -20,10 +20,19 @@ class TESTINGGROUNDS_API AGun : public AActor
 	/** Location on gun mesh where projectiles should spawn. */
 	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
 	class USceneComponent* FP_MuzzleLocation;
-	
+
+	UPROPERTY(VisibleDefaultsOnly, Category = Movement)
+	class URotatingMovementComponent* RotationComponent;
+
+protected:
+
+	virtual void BeginPlay() override;
+
 public:	
 	// Sets default values for this actor's properties
 	AGun();
+
+	//virtual void Tick(float DeltaTime) override;
 
 	/** Projectile class to spawn */
 	UPROPERTY(EditDefaultsOnly, Category = Projectile)
@@ -46,5 +55,7 @@ public:
 	UAnimInstance* TPAnimInstance;
 
 	UFUNCTION(BlueprintCallable, Category = "Firing")
-	void OnFire();
+	virtual void OnFire();
+
+	void DeactivateRotationComponent();
 };

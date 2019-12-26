@@ -42,6 +42,7 @@ void AMannequin::BeginPlay()
 	}
 
 	Gun = GetWorld()->SpawnActor<AGun>(GunBlueprint);
+	Gun->DeactivateRotationComponent();
 	if (IsPlayerControlled())
 	{
 		Gun->AttachToComponent(FPMesh, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));

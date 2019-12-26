@@ -7,6 +7,7 @@
 #include "Animation/AnimInstance.h"
 #include "Components/InputComponent.h"
 #include "GameFramework/InputSettings.h"
+#include "GameFramework/RotatingMovementComponent.h"
 
 // Sets default values
 AGun::AGun()
@@ -23,6 +24,16 @@ AGun::AGun()
 	FP_MuzzleLocation->SetupAttachment(FP_Gun);
 	FP_MuzzleLocation->SetRelativeLocation(FVector(0.2f, 48.4f, -10.6f));
 
+	RotationComponent = CreateDefaultSubobject<URotatingMovementComponent>(TEXT("RotatingMovementComponent"));
+	RotationComponent->bRotationInLocalSpace = false;
+
+}
+
+void AGun::BeginPlay()
+{
+	Super::BeginPlay();
+
+	//RotationComponent->Deactivate();
 }
 
 void AGun::OnFire()
@@ -63,4 +74,9 @@ void AGun::OnFire()
 		TPAnimInstance->Montage_Play(TPFireAnimation, 1.f);
 	}
 	return;
+}
+
+void AGun::DeactivateRotationComponent()
+{
+	RotationComponent->Deactivate();
 }
