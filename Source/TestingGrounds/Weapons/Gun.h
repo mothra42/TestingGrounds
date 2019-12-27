@@ -24,6 +24,9 @@ class TESTINGGROUNDS_API AGun : public AActor
 	UPROPERTY(VisibleDefaultsOnly, Category = Movement)
 	class URotatingMovementComponent* RotationComponent;
 
+	UPROPERTY(VisibleDefaultsOnly, Category = Collision)
+	class UCapsuleComponent* FP_GunCapsule;
+
 protected:
 
 	virtual void BeginPlay() override;
@@ -58,4 +61,6 @@ public:
 	virtual void OnFire();
 
 	void DeactivateRotationComponent();
+
+	void DeactivateCapsuleComponent();
 };

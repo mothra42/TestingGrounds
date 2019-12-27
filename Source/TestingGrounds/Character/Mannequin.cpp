@@ -43,6 +43,7 @@ void AMannequin::BeginPlay()
 
 	Gun = GetWorld()->SpawnActor<AGun>(GunBlueprint);
 	Gun->DeactivateRotationComponent();
+	Gun->DeactivateCapsuleComponent();
 	if (IsPlayerControlled())
 	{
 		Gun->AttachToComponent(FPMesh, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
@@ -87,5 +88,18 @@ void AMannequin::UnPossessed()
 void AMannequin::PullTrigger()
 {
 	Gun->OnFire();
+}
+
+void AMannequin::PickupWeapon(AGun* Weapon)
+{
+	if (IsPlayerControlled() && Weapon != nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("I'm gonna try and pick up that weapon"));
+		Gun->Destroy();
+		Gun = Weapon;
+		Weapon->DeactivateRotationComponent();
+		Weapon->AttachToComponent(FPMesh, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
+		//destroy overlapped gun
+	}
 }
 

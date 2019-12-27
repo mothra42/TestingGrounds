@@ -8,6 +8,7 @@
 #include "Components/InputComponent.h"
 #include "GameFramework/InputSettings.h"
 #include "GameFramework/RotatingMovementComponent.h"
+#include "Components/CapsuleComponent.h"
 
 // Sets default values
 AGun::AGun()
@@ -24,6 +25,11 @@ AGun::AGun()
 	FP_MuzzleLocation->SetupAttachment(FP_Gun);
 	FP_MuzzleLocation->SetRelativeLocation(FVector(0.2f, 48.4f, -10.6f));
 
+	FP_GunCapsule = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Collision Capsule"));
+	FP_GunCapsule->SetupAttachment(FP_Gun);
+	FP_GunCapsule->SetRelativeScale3D(FVector(2.325f, 2.265f, 1.1025f));
+
+
 	RotationComponent = CreateDefaultSubobject<URotatingMovementComponent>(TEXT("RotatingMovementComponent"));
 	RotationComponent->bRotationInLocalSpace = false;
 
@@ -32,8 +38,6 @@ AGun::AGun()
 void AGun::BeginPlay()
 {
 	Super::BeginPlay();
-
-	//RotationComponent->Deactivate();
 }
 
 void AGun::OnFire()
@@ -79,4 +83,9 @@ void AGun::OnFire()
 void AGun::DeactivateRotationComponent()
 {
 	RotationComponent->Deactivate();
+}
+
+void AGun::DeactivateCapsuleComponent()
+{
+	FP_GunCapsule->Deactivate();
 }
