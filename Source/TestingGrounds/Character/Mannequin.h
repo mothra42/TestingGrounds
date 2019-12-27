@@ -38,7 +38,7 @@ public:
 	void PullTrigger();
 
 	UFUNCTION(BlueprintCallable, Category = Weapon)
-	void PickupWeapon(AGun* Weapon);
+	void PickupWeapon(AGun* NewWeapon);
 
 private:
 	//Pawn Mesh, 1st person view
@@ -50,5 +50,5 @@ private:
 	class UCameraComponent* FPCamera;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Weapon, meta = (AllowPrivateAccess = "true"))
-	AGun* Gun;
+	AGun* HeldGun;
 };

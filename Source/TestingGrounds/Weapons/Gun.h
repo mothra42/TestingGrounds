@@ -17,10 +17,6 @@ class TESTINGGROUNDS_API AGun : public AActor
 	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
 	class USkeletalMeshComponent* FP_Gun;
 
-	/** Location on gun mesh where projectiles should spawn. */
-	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
-	class USceneComponent* FP_MuzzleLocation;
-
 	UPROPERTY(VisibleDefaultsOnly, Category = Movement)
 	class URotatingMovementComponent* RotationComponent;
 
@@ -28,6 +24,10 @@ class TESTINGGROUNDS_API AGun : public AActor
 	class UCapsuleComponent* FP_GunCapsule;
 
 protected:
+
+	/** Location on gun mesh where projectiles should spawn. */
+	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
+	class USceneComponent* FP_MuzzleLocation;
 
 	virtual void BeginPlay() override;
 

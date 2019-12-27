@@ -41,20 +41,20 @@ void AMannequin::BeginPlay()
 		return;
 	}
 
-	Gun = GetWorld()->SpawnActor<AGun>(GunBlueprint);
-	Gun->DeactivateRotationComponent();
-	Gun->DeactivateCapsuleComponent();
+	HeldGun = GetWorld()->SpawnActor<AGun>(GunBlueprint);
+	HeldGun->DeactivateRotationComponent();
+	HeldGun->DeactivateCapsuleComponent();
 	if (IsPlayerControlled())
 	{
-		Gun->AttachToComponent(FPMesh, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
+		HeldGun->AttachToComponent(FPMesh, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
 	}
 	else
 	{
-		Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
+		HeldGun->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
 	}
 
-	Gun->FPAnimInstance = FPMesh->GetAnimInstance();
-	Gun->TPAnimInstance = GetMesh()->GetAnimInstance();
+	HeldGun->FPAnimInstance = FPMesh->GetAnimInstance();
+	HeldGun->TPAnimInstance = GetMesh()->GetAnimInstance();
 
 	if (InputComponent != NULL)
 	{
@@ -79,27 +79,28 @@ void AMannequin::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 void AMannequin::UnPossessed()
 {
 	Super::UnPossessed();
-	if (Gun != nullptr)
+	if (HeldGun != nullptr)
 	{
-		Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
+		HeldGun->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
 	}
 }
 
 void AMannequin::PullTrigger()
 {
-	Gun->OnFire();
+	HeldGun->OnFire();
 }
 
-void AMannequin::PickupWeapon(AGun* Weapon)
+void AMannequin::PickupWeapon(AGun* NewWeapon)
 {
-	if (IsPlayerControlled() && Weapon != nullptr)
+	if (IsPlayerControlled() && NewWeapon != nullptr && HeldGun != NewWeapon)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("I'm gonna try and pick up that weapon"));
-		Gun->Destroy();
-		Gun = Weapon;
-		Weapon->DeactivateRotationComponent();
-		Weapon->AttachToComponent(FPMesh, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
-		//destroy overlapped gun
+		HeldGun->Destroy();
+		HeldGun = NewWeapon;
+		NewWeapon->DeactivateRotationComponent();
+		NewWeapon->DeactivateCapsuleComponent();
+		NewWeapon->AttachToComponent(FPMesh, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
+		NewWeapon->FPAnimInstance = FPMesh->GetAnimInstance();
 	}
 }
 
