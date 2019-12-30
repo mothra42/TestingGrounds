@@ -87,5 +87,5 @@ void AGun::DeactivateRotationComponent()
 
 void AGun::DeactivateCapsuleComponent()
 {
-	FP_GunCapsule->Deactivate();
+	FP_GunCapsule->SetCollisionProfileName(FName("NoCollision"));
 }

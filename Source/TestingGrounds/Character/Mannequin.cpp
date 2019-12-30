@@ -92,9 +92,8 @@ void AMannequin::PullTrigger()
 
 void AMannequin::PickupWeapon(AGun* NewWeapon)
 {
-	if (IsPlayerControlled() && NewWeapon != nullptr && HeldGun != NewWeapon)
+	if (IsPlayerControlled() && NewWeapon != nullptr)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("I'm gonna try and pick up that weapon"));
 		HeldGun->Destroy();
 		HeldGun = NewWeapon;
 		NewWeapon->DeactivateRotationComponent();
