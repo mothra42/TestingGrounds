@@ -16,4 +16,12 @@ class TESTINGGROUNDS_API AShotGun : public AGun
 
 public:
 	virtual void OnFire() override;
+
+private:
+
+	UPROPERTY(EditDefaultsOnly, Category = Projectile)
+	int32 NumProjectiles = 30;
+
+	UPROPERTY(EditDefaultsOnly, Category = Projectile)
+	float ProjectileSpreadRange = 35.f;
 };

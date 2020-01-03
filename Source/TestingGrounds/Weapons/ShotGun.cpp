@@ -12,7 +12,25 @@ void AShotGun::OnFire()
 {
 	Super::OnFire();
 
-	UE_LOG(LogTemp, Warning, TEXT("Hey you're firing a fucking shotgun now!"));
+	if (Super::ProjectileClass != nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Hey you're firing a fucking shotgun now!"));
+		UWorld* const World = GetWorld();
 
-	//TODO Make shotgun fire multiple projectiles at strange angles, maybe mess with range.
+		if (World != nullptr)
+		{
+			const FRotator SpawnRotation = Super::FP_MuzzleLocation->GetComponentRotation();
+			const FVector SpawnLocation = Super::FP_MuzzleLocation->GetComponentLocation();
+
+			for (size_t i = 0; i < NumProjectiles; i++)
+			{
+				float RandPitch = FMath::RandRange(-ProjectileSpreadRange, ProjectileSpreadRange);
+				float RandYaw = FMath::RandRange(-ProjectileSpreadRange, ProjectileSpreadRange);
+
+				FRotator NewRotation = SpawnRotation + FRotator(RandPitch, RandYaw, 0.f);
+
+				World->SpawnActor<ABallProjectile>(Super::ProjectileClass, SpawnLocation, NewRotation);
+			}
+		}
+	}
 }
