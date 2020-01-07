@@ -14,7 +14,6 @@ void AShotGun::OnFire()
 
 	if (Super::ProjectileClass != nullptr)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Hey you're firing a fucking shotgun now!"));
 		UWorld* const World = GetWorld();
 
 		if (World != nullptr)
