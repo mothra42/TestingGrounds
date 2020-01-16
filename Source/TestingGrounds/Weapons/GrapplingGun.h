@@ -20,6 +20,8 @@ class TESTINGGROUNDS_API AGrapplingGun : public AGun
 		virtual void OnFire() override;
 
 	private:
+		FVector HitLocation;
+
 		UPROPERTY(EditDefaultsOnly, Category = "Cable")
 		float CableRange = 1000.f;
 

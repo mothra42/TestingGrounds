@@ -17,7 +17,6 @@ void AGrapplingGun::OnFire()
 {
 	//Super::OnFire();
 
-	FVector HitLocation;
 	//find out if end will attach to anything solid
 	if (bHasAnchor(HitLocation))
 	{
@@ -67,6 +66,7 @@ void AGrapplingGun::ApplyForceToCharacter()
 			if (MovementComponent != nullptr)
 			{
 				MovementComponent->AddForce(CalculateForce());
+				MovementComponent->AddForce(PlayerCharacter->GetActorForwardVector() * 50000);
 			}
 		}
 		UE_LOG(LogTemp, Warning, TEXT("Applying a force to character"));
@@ -78,5 +78,10 @@ void AGrapplingGun::ApplyForceToCharacter()
 
 FVector AGrapplingGun::CalculateForce()
 {
-	return FVector(0, 0, 1000000.f);
+	FVector PlayerVelocity = PlayerCharacter->GetVelocity();
+	FVector DistanceVector = PlayerCharacter->GetActorLocation() - HitLocation;
+	FVector NormalizedDistanceVector = DistanceVector.GetSafeNormal();
+
+	FVector GrappleForce = (FVector::DotProduct(PlayerVelocity, DistanceVector) * NormalizedDistanceVector) * -2.0;
+	return GrappleForce;
 }
