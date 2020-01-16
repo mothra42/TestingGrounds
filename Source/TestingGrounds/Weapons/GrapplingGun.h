@@ -14,4 +14,25 @@ class TESTINGGROUNDS_API AGrapplingGun : public AGun
 {
 	GENERATED_BODY()
 	
+	public:
+		virtual void Tick(float DeltaTime) override;
+
+		virtual void OnFire() override;
+
+	private:
+		UPROPERTY(EditDefaultsOnly, Category = "Cable")
+		float CableRange = 1000.f;
+
+		UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Setup", meta = (AllowPrivateAccess = "true"))
+		class AActor* PlayerCharacter;
+
+		bool bHasAnchor(FVector& Hitlocation); // Out Param HitLocation, where target will attach;
+
+		UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Grappling Hook", meta = (AllowPrivateAccess = "true"))
+		bool isAttached = false;
+
+		UFUNCTION(BlueprintCallable, Category = "Grappling Hook")
+		void ApplyForceToCharacter();
+
+		FVector CalculateForce();
 };
