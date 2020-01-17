@@ -38,6 +38,9 @@ public:
 	void PullTrigger();
 
 	UFUNCTION(BlueprintCallable, Category = Weapon)
+	void ReleaseTrigger();
+
+	UFUNCTION(BlueprintCallable, Category = Weapon)
 	void PickupWeapon(AGun* NewWeapon);
 
 private:

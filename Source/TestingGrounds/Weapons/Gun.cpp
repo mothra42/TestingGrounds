@@ -76,6 +76,12 @@ void AGun::OnFire()
 	return;
 }
 
+void AGun::OnReleaseTrigger()
+{
+	return; //meant to be overrided
+	//TODO Probably a better way to make a blank method, like templating or something.
+}
+
 void AGun::DeactivateRotationComponent()
 {
 	RotationComponent->Deactivate();

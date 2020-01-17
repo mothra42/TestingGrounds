@@ -14,19 +14,19 @@ class TESTINGGROUNDS_API AGun : public AActor
 	GENERATED_BODY()
 
 	/** Gun mesh*/
-	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
+	UPROPERTY(VisibleDefaultsOnly, Category = "Mesh")
 	class USkeletalMeshComponent* FP_Gun;
 
-	UPROPERTY(VisibleDefaultsOnly, Category = Movement)
+	UPROPERTY(VisibleDefaultsOnly, Category = "Movement")
 	class URotatingMovementComponent* RotationComponent;
 
-	UPROPERTY(VisibleDefaultsOnly, Category = Collision)
+	UPROPERTY(VisibleDefaultsOnly, Category = "Collision")
 	class UCapsuleComponent* FP_GunCapsule;
 
 protected:
 
 	/** Location on gun mesh where projectiles should spawn. */
-	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
+	UPROPERTY(VisibleDefaultsOnly, Category = "Mesh")
 	class USceneComponent* FP_MuzzleLocation;
 
 	virtual void BeginPlay() override;
@@ -38,19 +38,19 @@ public:
 	//virtual void Tick(float DeltaTime) override;
 
 	/** Projectile class to spawn */
-	UPROPERTY(EditDefaultsOnly, Category = Projectile)
+	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
 	TSubclassOf<class ABallProjectile> ProjectileClass;
 
 	/** Sound to play each time we fire */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay")
 	class USoundBase* FireSound;
 
 	/** AnimMontage to play each time we fire */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay")
 	class UAnimMontage* FPFireAnimation;
 
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay")
 	UAnimMontage* TPFireAnimation;
 
 	class UAnimInstance* FPAnimInstance;
@@ -59,6 +59,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Firing")
 	virtual void OnFire();
+
+	UFUNCTION(BlueprintCallable, Category = "Firing")
+	virtual void OnReleaseTrigger();
 
 	void DeactivateRotationComponent();
 

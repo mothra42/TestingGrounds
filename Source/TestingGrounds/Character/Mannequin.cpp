@@ -59,6 +59,7 @@ void AMannequin::BeginPlay()
 	if (InputComponent != NULL)
 	{
 		InputComponent->BindAction("Fire", IE_Pressed, this, &AMannequin::PullTrigger);
+		InputComponent->BindAction("Fire", IE_Released, this, &AMannequin::ReleaseTrigger);
 	}
 }
 
@@ -88,6 +89,11 @@ void AMannequin::UnPossessed()
 void AMannequin::PullTrigger()
 {
 	HeldGun->OnFire();
+}
+
+void AMannequin::ReleaseTrigger()
+{
+	HeldGun->OnReleaseTrigger();
 }
 
 void AMannequin::PickupWeapon(AGun* NewWeapon)
