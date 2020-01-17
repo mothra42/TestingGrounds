@@ -15,12 +15,23 @@ class TESTINGGROUNDS_API AGrapplingGun : public AGun
 	GENERATED_BODY()
 	
 	public:
+		AGrapplingGun();
+
 		virtual void Tick(float DeltaTime) override;
 
 		virtual void OnFire() override;
 
+		virtual void OnReleaseTrigger() override;
+
 	private:
-		FVector HitLocation;
+		UPROPERTY(VisibleDefaultsOnly, Category = "Cable")
+		class UCableComponent* CableComponent;
+
+		UPROPERTY(VisibleDefaultsOnly, Category = "Cable")
+		class USceneComponent* Anchor;
+
+		UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Setup", meta = (AllowPrivateAccess = "true"))
+		FVector AnchorPoint;
 
 		UPROPERTY(EditDefaultsOnly, Category = "Cable")
 		float CableRange = 1000.f;
@@ -31,7 +42,7 @@ class TESTINGGROUNDS_API AGrapplingGun : public AGun
 		bool bHasAnchor(FVector& Hitlocation); // Out Param HitLocation, where target will attach;
 
 		UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Grappling Hook", meta = (AllowPrivateAccess = "true"))
-		bool isAttached = false;
+		bool IsAttached = false;
 
 		UFUNCTION(BlueprintCallable, Category = "Grappling Hook")
 		void ApplyForceToCharacter();
