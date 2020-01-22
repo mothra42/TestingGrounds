@@ -24,13 +24,13 @@ class TESTINGGROUNDS_API AGrapplingGun : public AGun
 		virtual void OnReleaseTrigger() override;
 
 	private:
-		UPROPERTY(VisibleDefaultsOnly, Category = "Cable")
+		UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Cable", meta = (AllowPrivateAccess = "true"))
 		class UCableComponent* CableComponent;
 
 		UPROPERTY(VisibleDefaultsOnly, Category = "Cable")
 		class USceneComponent* Anchor;
 
-		UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Setup", meta = (AllowPrivateAccess = "true"))
+		UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Cable", meta = (AllowPrivateAccess = "true"))
 		FVector AnchorPoint;
 
 		UPROPERTY(EditDefaultsOnly, Category = "Cable")
