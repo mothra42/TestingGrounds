@@ -6,6 +6,7 @@
 #include "Animation/AnimInstance.h"
 #include "Camera/CameraComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "InventoryComponent.h"
 #include "Weapons/Gun.h"
 
 // Sets default values
@@ -29,6 +30,9 @@ AMannequin::AMannequin()
 	FPMesh->RelativeLocation = FVector(-1.604504, -5.647609, -155.168137);
 	FPMesh->RelativeRotation = FRotator(1.899995, -19.190002, 5.200006);
 
+	//Create Inventory
+	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>(TEXT("InventoryComponent"));
+
 }
 
 // Called when the game starts or when spawned
@@ -44,6 +48,7 @@ void AMannequin::BeginPlay()
 	HeldGun = GetWorld()->SpawnActor<AGun>(GunBlueprint);
 	HeldGun->DeactivateRotationComponent();
 	HeldGun->DeactivateCapsuleComponent();
+	InventoryComponent->AddWeapon(HeldGun);
 	if (IsPlayerControlled())
 	{
 		HeldGun->AttachToComponent(FPMesh, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
@@ -100,12 +105,37 @@ void AMannequin::PickupWeapon(AGun* NewWeapon)
 {
 	if (IsPlayerControlled() && NewWeapon != nullptr)
 	{
-		HeldGun->Destroy();
-		HeldGun = NewWeapon;
 		NewWeapon->DeactivateRotationComponent();
 		NewWeapon->DeactivateCapsuleComponent();
-		NewWeapon->AttachToComponent(FPMesh, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
 		NewWeapon->FPAnimInstance = FPMesh->GetAnimInstance();
+
+		if (InventoryComponent->GetNumGunsInInventory() >= MaxGunsInInventory)
+		{
+			InventoryComponent->RemoveWeapon(HeldGun);
+			InventoryComponent->AddWeapon(NewWeapon);
+			HeldGun->Destroy();
+			HeldGun = NewWeapon;
+			return;
+		}
+
+		InventoryComponent->AddWeapon(NewWeapon);
+		SwitchHeldWeapon(NewWeapon);
 	}
 }
 
+void AMannequin::SwitchHeldWeapon(AGun* NewHeldWeapon)
+{
+	StoreWeapon(HeldGun);
+	HoldWeapon(NewHeldWeapon);
+}
+
+void AMannequin::HoldWeapon(AGun* Weapon)
+{
+	Weapon->AttachToComponent(FPMesh, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
+}
+
+void AMannequin::StoreWeapon(AGun* Weapon)
+{
+	Weapon->AttachToComponent(FPMesh, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("Backpack"));
+	//TODO Third person model does not have a Backpack socket. Needs to be added.
+}
