@@ -2,6 +2,7 @@
 
 
 #include "InventoryComponent.h"
+#include "..//Weapons/Gun.h"
 
 // Sets default values for this component's properties
 UInventoryComponent::UInventoryComponent()
@@ -28,7 +29,33 @@ AActor* UInventoryComponent::SwitchWeapon(AActor* HeldWeapon)
 	return nullptr;
 }
 
+void UInventoryComponent::AddWeapon(AActor* WeaponToBeAdded)
+{
+	AGun* GunToBeAdded = Cast<AGun>(WeaponToBeAdded);
+
+	if (GunToBeAdded != nullptr)
+	{
+		WeaponInventory.Add(GunToBeAdded);
+	}
+}
+
+void UInventoryComponent::RemoveWeapon(AActor* WeaponToBeRemoved)
+{
+	for (int32 i = 0; i < WeaponInventory.Num(); i++)
+	{
+		if (WeaponInventory[i] == WeaponToBeRemoved)
+		{
+			WeaponInventory.RemoveAt(i);
+		}
+	}
+}
+
 AActor* UInventoryComponent::EquipItem()
 {
 	return nullptr;
+}
+
+int32 UInventoryComponent::GetNumGunsInInventory()
+{
+	return WeaponInventory.Num();
 }

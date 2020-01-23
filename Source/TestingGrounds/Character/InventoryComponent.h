@@ -20,14 +20,20 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-public:	
+public:
+	UFUNCTION(BlueprintCallable, Category = "Weapon Inventory")
 	AActor* SwitchWeapon(AActor* HeldWeapon); //used for player to switch between weapons
 
 	AActor* EquipItem();
 
+	void AddWeapon(AActor* WeaponToBeAdded);
+
+	void RemoveWeapon(AActor* WeaponToBeRemoved);
+
+	int32 GetNumGunsInInventory();
+
 private:
-	AActor* WeaponOne;
-	AActor* WeaponTwo;
+	TArray<class AGun*> WeaponInventory;
 	
 	TArray<AActor*> ItemInventory;
 
