@@ -114,12 +114,14 @@ void AMannequin::PickupWeapon(AGun* NewWeapon)
 			InventoryComponent->RemoveWeapon(HeldGun);
 			InventoryComponent->AddWeapon(NewWeapon);
 			HeldGun->Destroy();
+			HoldWeapon(NewWeapon);
 			HeldGun = NewWeapon;
-			return;
 		}
-
-		InventoryComponent->AddWeapon(NewWeapon);
-		SwitchHeldWeapon(NewWeapon);
+		else
+		{
+			InventoryComponent->AddWeapon(NewWeapon);
+			SwitchHeldWeapon(NewWeapon);
+		}
 	}
 }
 
@@ -131,11 +133,32 @@ void AMannequin::SwitchHeldWeapon(AGun* NewHeldWeapon)
 
 void AMannequin::HoldWeapon(AGun* Weapon)
 {
-	Weapon->AttachToComponent(FPMesh, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
+	if (Weapon != nullptr)
+	{
+		if (IsPlayerControlled())
+		{
+			Weapon->AttachToComponent(FPMesh, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
+		}
+		else
+		{
+			Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
+		}
+
+		HeldGun = Weapon;
+	}
 }
 
 void AMannequin::StoreWeapon(AGun* Weapon)
 {
-	Weapon->AttachToComponent(FPMesh, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("Backpack"));
-	//TODO Third person model does not have a Backpack socket. Needs to be added.
+	if (Weapon != nullptr)
+	{
+		if (IsPlayerControlled())
+		{
+			Weapon->AttachToComponent(FPMesh, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("Backpack"));
+		}
+		else
+		{
+			Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("Backpack"));
+		}
+	}
 }
