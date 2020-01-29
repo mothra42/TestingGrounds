@@ -19,8 +19,25 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+private:
+	UPROPERTY(Category = Trap, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	class UStaticMeshComponent* TrapBody;
+
+	UPROPERTY(Category = Trap, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	class UCableComponent* Harpoon;
+
+	UPROPERTY(Category = Trap, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	class UBoxComponent* TriggerBox;
+
+	void OrientTrapToSurface(FHitResult HitResult);
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UFUNCTION(BlueprintCallable, Category = "Trap Placement")
+	FHitResult AttachTrapToSurface();
+
+	UFUNCTION(BlueprintCallable, Category = "Firing")
+	void FireTrap(AActor* ActorToTrap);
 };
