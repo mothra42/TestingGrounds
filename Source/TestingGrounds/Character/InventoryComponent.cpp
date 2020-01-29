@@ -24,11 +24,6 @@ void UInventoryComponent::BeginPlay()
 	
 }
 
-AActor* UInventoryComponent::SwitchWeapon(AActor* HeldWeapon)
-{
-	return nullptr;
-}
-
 void UInventoryComponent::AddWeapon(AActor* WeaponToBeAdded)
 {
 	AGun* GunToBeAdded = Cast<AGun>(WeaponToBeAdded);

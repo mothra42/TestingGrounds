@@ -21,8 +21,6 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
-	UFUNCTION(BlueprintCallable, Category = "Weapon Inventory")
-	AActor* SwitchWeapon(AActor* HeldWeapon); //used for player to switch between weapons
 
 	AActor* EquipItem();
 
