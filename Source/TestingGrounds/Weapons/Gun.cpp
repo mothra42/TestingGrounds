@@ -40,7 +40,7 @@ void AGun::BeginPlay()
 	Super::BeginPlay();
 }
 
-void AGun::OnFire()
+void AGun::OnFire(FVector AimDirection)
 {
 	// try and fire a projectile
 	if (ProjectileClass != NULL)

@@ -8,9 +8,9 @@
 #include "Components/InputComponent.h"
 #include "GameFramework/InputSettings.h"
 
-void AShotGun::OnFire()
+void AShotGun::OnFire(FVector AimDirection)
 {
-	Super::OnFire();
+	Super::OnFire(AimDirection);
 
 	if (Super::ProjectileClass != nullptr)
 	{

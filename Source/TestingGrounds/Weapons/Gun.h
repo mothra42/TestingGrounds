@@ -58,7 +58,7 @@ public:
 	UAnimInstance* TPAnimInstance;
 
 	UFUNCTION(BlueprintCallable, Category = "Firing")
-	virtual void OnFire();
+	virtual void OnFire(FVector AimDirection);
 
 	UFUNCTION(BlueprintCallable, Category = "Firing")
 	virtual void OnReleaseTrigger();

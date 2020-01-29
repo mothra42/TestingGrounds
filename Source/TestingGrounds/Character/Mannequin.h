@@ -11,8 +11,6 @@ class TESTINGGROUNDS_API AMannequin : public ACharacter
 {
 	GENERATED_BODY()
 
-
-
 public:
 	// Sets default values for this character's properties
 	AMannequin();
@@ -43,7 +41,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	void PickupWeapon(AGun* NewWeapon);
 
+	UFUNCTION(BlueprintCallable, Category = "Inventory")
 	void SwitchHeldWeapon(AGun* NewHeldWeapon);
+
+	bool GetLookDirection(FVector& LookDirection) const;
 
 private:
 	//Pawn Mesh, 1st person view
@@ -59,7 +60,19 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon", meta = (AllowPrivateAccess = "true"))
 	AGun* HeldGun;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Inventory", meta = (AllowPrivateAccess = "true"))
+	AGun* StoredGun;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Setup", meta = (AllowPrivateAccess = "true"))
+	class APlayerController* PlayerController;
+
 	const int32 MaxGunsInInventory = 2;
+
+	UPROPERTY(EditDefaultsOnly)
+	float CrosshairXLocation = 0.5;
+
+	UPROPERTY(EditDefaultsOnly)
+	float CrosshairYLocation = 0.3333;
 
 	void HoldWeapon(AGun* Weapon);
 

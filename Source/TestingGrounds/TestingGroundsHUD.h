@@ -16,10 +16,13 @@ public:
 
 	/** Primary draw call for the HUD */
 	virtual void DrawHUD() override;
+	
+	FVector2D GetCrosshairDrawPosition();
 
 private:
 	/** Crosshair asset pointer */
 	class UTexture2D* CrosshairTex;
 
+	FVector2D CrosshairDrawPosition;
 };
 

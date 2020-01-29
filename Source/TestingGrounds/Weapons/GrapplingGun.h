@@ -19,7 +19,7 @@ class TESTINGGROUNDS_API AGrapplingGun : public AGun
 
 		virtual void Tick(float DeltaTime) override;
 
-		virtual void OnFire() override;
+		virtual void OnFire(FVector AimDirection) override;
 
 		virtual void OnReleaseTrigger() override;
 

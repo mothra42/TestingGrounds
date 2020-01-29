@@ -15,7 +15,7 @@ class TESTINGGROUNDS_API AShotGun : public AGun
 	GENERATED_BODY()
 
 public:
-	virtual void OnFire() override;
+	virtual void OnFire(FVector AimDirection) override;
 
 private:
 

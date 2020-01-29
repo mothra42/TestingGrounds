@@ -7,6 +7,8 @@
 #include "Camera/CameraComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "InventoryComponent.h"
+#include "GameFramework/PlayerController.h"
+#include "../TestingGroundsHUD.h"
 #include "Weapons/Gun.h"
 
 // Sets default values
@@ -93,7 +95,10 @@ void AMannequin::UnPossessed()
 
 void AMannequin::PullTrigger()
 {
-	HeldGun->OnFire();
+	FVector AimDirection;
+	GetLookDirection(AimDirection);
+
+	HeldGun->OnFire(AimDirection);
 }
 
 void AMannequin::ReleaseTrigger()
@@ -129,6 +134,7 @@ void AMannequin::SwitchHeldWeapon(AGun* NewHeldWeapon)
 {
 	StoreWeapon(HeldGun);
 	HoldWeapon(NewHeldWeapon);
+	//TODO add some sort of animation for switching weapons
 }
 
 void AMannequin::HoldWeapon(AGun* Weapon)
@@ -160,5 +166,32 @@ void AMannequin::StoreWeapon(AGun* Weapon)
 		{
 			Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("Backpack"));
 		}
+
+		StoredGun = Weapon;
 	}
+}
+
+bool AMannequin::GetLookDirection(FVector& LookDirection) const
+{
+	//Find crosshair position from TestingGroundsHUD
+	auto HUD = PlayerController->GetHUD();
+	ATestingGroundsHUD* TestingGroundsHUD = Cast<ATestingGroundsHUD>(HUD);
+
+	if (TestingGroundsHUD != nullptr)
+	{
+		auto CrosshairLocation = TestingGroundsHUD->GetCrosshairDrawPosition();
+
+		FVector WorldLocation;
+		if (PlayerController != nullptr)
+		{
+			return PlayerController->DeprojectScreenPositionToWorld(
+				CrosshairLocation.X,
+				CrosshairLocation.Y,
+				WorldLocation,
+				LookDirection
+			);
+		}
+	}
+
+	return false;
 }

@@ -24,19 +24,17 @@ void AGrapplingGun::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void AGrapplingGun::OnFire()
+void AGrapplingGun::OnFire(FVector AimDirection)
 {
 	//find out if end will attach to anything solid
 	if (bHasAnchor(AnchorPoint))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Firing"));
 		Anchor->SetWorldLocation(AnchorPoint);
 		CableComponent->SetAttachEndToComponent(Anchor);
 		CableComponent->SetVisibility(true);
 		float Distance = (PlayerCharacter->GetActorLocation() - AnchorPoint).Size();
 		CableComponent->CableLength = Distance;
 	}
-	//side note: can used the opposite to make a harpoon trap like thing.
 }
 
 void AGrapplingGun::OnReleaseTrigger()
