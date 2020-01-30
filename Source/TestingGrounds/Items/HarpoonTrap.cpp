@@ -6,6 +6,8 @@
 #include "Components/BoxComponent.h"
 #include"../../../Engine/Plugins/Runtime/CableComponent/Source/CableComponent/Classes/CableComponent.h"
 
+//TODO need to reparent class to a new ThrowableItem base class
+
 // Sets default values
 AHarpoonTrap::AHarpoonTrap()
 {

@@ -3,11 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
+#include "ThrowableItem.h"
 #include "HarpoonTrap.generated.h"
 
 UCLASS()
-class TESTINGGROUNDS_API AHarpoonTrap : public AActor
+class TESTINGGROUNDS_API AHarpoonTrap : public AThrowableItem
 {
 	GENERATED_BODY()
 	
