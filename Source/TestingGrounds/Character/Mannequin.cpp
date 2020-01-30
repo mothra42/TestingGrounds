@@ -6,10 +6,13 @@
 #include "Animation/AnimInstance.h"
 #include "Camera/CameraComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Engine/SkeletalMeshSocket.h"
 #include "InventoryComponent.h"
 #include "GameFramework/PlayerController.h"
 #include "../TestingGroundsHUD.h"
 #include "Weapons/Gun.h"
+#include "Items/HarpoonTrap.h"
+#include "DrawDebugHelpers.h"
 
 // Sets default values
 AMannequin::AMannequin()
@@ -96,9 +99,10 @@ void AMannequin::UnPossessed()
 void AMannequin::PullTrigger()
 {
 	FVector AimDirection;
-	GetLookDirection(AimDirection);
+	GetAimDirection(AimDirection);
 
 	HeldGun->OnFire(AimDirection);
+	ThrowItem(nullptr); //Just For Testing;
 }
 
 void AMannequin::ReleaseTrigger()
@@ -126,6 +130,40 @@ void AMannequin::PickupWeapon(AGun* NewWeapon)
 		{
 			InventoryComponent->AddWeapon(NewWeapon);
 			SwitchHeldWeapon(NewWeapon);
+		}
+	}
+}
+
+void AMannequin::ThrowItem(AActor* Item)
+{
+	FVector AimDirection;
+	if (GetAimDirection(AimDirection))
+	{
+		FHitResult HitResult;
+		auto StartLocation = FPCamera->GetComponentLocation();
+		UE_LOG(LogTemp, Warning, TEXT("Start Location is %s"), *StartLocation.ToString());
+		auto EndLocation = StartLocation + (AimDirection * 2000); // TODO magic number to be made editable by BP
+		//DrawDebugLine(GetWorld(), StartLocation, EndLocation, FColor::Red, true, 5.f);
+		if (GetWorld()->LineTraceSingleByChannel(
+			HitResult,
+			StartLocation,
+			EndLocation,
+			ECollisionChannel::ECC_Visibility
+		))
+		{
+			//DrawDebugBox(GetWorld(), HitResult.Location, FVector(10, 10, 10), FColor::Blue, false, 5.f);
+			//DrawDebugSphere(GetWorld(), HitResult.Location, 5.f, 15, FColor::Red, true, 5.f);
+			//DrawDebugLine(GetWorld(), HitResult.Location, HitResult.ImpactNormal, FColor::Red, true);
+			UWorld* const World = GetWorld();
+			if (World != nullptr)
+			{
+				auto ThrowStartLocation = FPMesh->GetSocketLocation(FName("ThrowableItem"));
+				auto ThrowStartRotation = FPMesh->GetSocketRotation(FName("ThrowableItem"));
+				//TODO Item should be a subclass of a ThrowableItem class, the item should be set in Blueprint as the currently equipped throwable item
+				DrawDebugSphere(GetWorld(), ThrowStartLocation, 5.f, 15, FColor::Red, true, 5.f);
+				auto ThrownItem = World->SpawnActor<AHarpoonTrap>(ThrowableItemClass, ThrowStartLocation, FPCamera->GetComponentRotation());
+				ThrownItem->LaunchItem(ThrowStartLocation, HitResult.Location);
+			}
 		}
 	}
 }
@@ -171,7 +209,7 @@ void AMannequin::StoreWeapon(AGun* Weapon)
 	}
 }
 
-bool AMannequin::GetLookDirection(FVector& LookDirection) const
+bool AMannequin::GetAimDirection(FVector& AimDirection) const
 {
 	//Find crosshair position from TestingGroundsHUD
 	auto HUD = PlayerController->GetHUD();
@@ -188,7 +226,7 @@ bool AMannequin::GetLookDirection(FVector& LookDirection) const
 				CrosshairLocation.X,
 				CrosshairLocation.Y,
 				WorldLocation,
-				LookDirection
+				AimDirection
 			);
 		}
 	}

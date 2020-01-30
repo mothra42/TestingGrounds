@@ -41,10 +41,13 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	void PickupWeapon(AGun* NewWeapon);
 
+	UFUNCTION(BlueprintCallable, Category = "Item")
+	void ThrowItem(AActor* Item);
+
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
 	void SwitchHeldWeapon(AGun* NewHeldWeapon);
 
-	bool GetLookDirection(FVector& LookDirection) const;
+	bool GetAimDirection(FVector& AimDirection) const;
 
 private:
 	//Pawn Mesh, 1st person view
@@ -63,7 +66,10 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Inventory", meta = (AllowPrivateAccess = "true"))
 	AGun* StoredGun;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Setup", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "ThrowableItem", meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<class AHarpoonTrap> ThrowableItemClass; //TODO need to make a generic throwable item class
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Setup", meta = (AllowPrivateAccess = "true"))
 	class APlayerController* PlayerController;
 
 	const int32 MaxGunsInInventory = 2;
