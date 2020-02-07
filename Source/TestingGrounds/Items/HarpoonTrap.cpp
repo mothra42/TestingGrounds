@@ -5,6 +5,7 @@
 #include "Components/StaticMeshComponent.h"
 #include "Components/BoxComponent.h"
 #include"../../../Engine/Plugins/Runtime/CableComponent/Source/CableComponent/Classes/CableComponent.h"
+#include "Math/Vector.h"
 
 //TODO need to reparent class to a new ThrowableItem base class
 
@@ -34,6 +35,7 @@ void AHarpoonTrap::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
+//TODO OnHit do this
 FHitResult AHarpoonTrap::AttachTrapToSurface()
 {
 	FHitResult HitResult;
@@ -50,6 +52,10 @@ FHitResult AHarpoonTrap::AttachTrapToSurface()
 
 void AHarpoonTrap::OrientTrapToSurface(FHitResult HitResult)
 {
+	FRotator NormalRotation = HitResult.Normal.GetSafeNormal().Rotation();
+	FRotator TrapRotation = TrapBody->GetForwardVector().Rotation();
+	FRotator NecessaryRotation = NormalRotation - TrapRotation;
+	TrapBody->AddWorldRotation(NecessaryRotation);
 	//TODO Orient Trap to so that trap forward vector is normal to plane trap is attached to.
 }
 

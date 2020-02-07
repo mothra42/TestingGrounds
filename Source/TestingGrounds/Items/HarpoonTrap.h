@@ -29,6 +29,7 @@ private:
 	UPROPERTY(Category = Trap, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	class UBoxComponent* TriggerBox;
 
+	UFUNCTION(BlueprintCallable, Category = "Attachment")
 	void OrientTrapToSurface(FHitResult HitResult);
 
 public:	

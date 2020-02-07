@@ -32,13 +32,11 @@ void AThrowableItem::Tick(float DeltaTime)
 
 void AThrowableItem::LaunchItem(FVector StartLocation, FVector EndLocation)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Trying to launch the thing"));
+	//TODO remove HasAimSolution method in favor of an aiming system.
 	FVector LaunchVelocity;
 	if (HasAimSolution(StartLocation, EndLocation, LaunchVelocity))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("This thing was Launched"));
-		DrawDebugLine(GetWorld(), StartLocation, (LaunchVelocity * 3000), FColor::Red, true);
-		ProjectileMovement->SetVelocityInLocalSpace(LaunchVelocity);
+		ProjectileMovement->SetVelocityInLocalSpace(FVector::ForwardVector * 2000);
 		ProjectileMovement->Activate();
 	}
 }
