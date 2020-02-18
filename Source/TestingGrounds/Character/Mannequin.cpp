@@ -12,6 +12,7 @@
 #include "../TestingGroundsHUD.h"
 #include "Weapons/Gun.h"
 #include "Items/HarpoonTrap.h"
+#include "Components/SceneComponent.h"
 #include "DrawDebugHelpers.h"
 
 // Sets default values
@@ -34,6 +35,10 @@ AMannequin::AMannequin()
 	FPMesh->CastShadow = false;
 	FPMesh->RelativeLocation = FVector(-1.604504, -5.647609, -155.168137);
 	FPMesh->RelativeRotation = FRotator(1.899995, -19.190002, 5.200006);
+
+	AttachmentPoint = CreateDefaultSubobject<USceneComponent>(TEXT("AttachmentPoint"));
+	AttachmentPoint->SetupAttachment(GetMesh());
+	AttachmentPoint->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("AttachmentPoint"));
 
 	//Create Inventory
 	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>(TEXT("InventoryComponent"));
@@ -143,7 +148,6 @@ void AMannequin::ThrowItem(AActor* Item)
 		auto StartLocation = FPCamera->GetComponentLocation();
 		UE_LOG(LogTemp, Warning, TEXT("Start Location is %s"), *StartLocation.ToString());
 		auto EndLocation = StartLocation + (AimDirection * 2000); // TODO magic number to be made editable by BP
-		//DrawDebugLine(GetWorld(), StartLocation, EndLocation, FColor::Red, true, 5.f);
 		if (GetWorld()->LineTraceSingleByChannel(
 			HitResult,
 			StartLocation,
@@ -151,16 +155,12 @@ void AMannequin::ThrowItem(AActor* Item)
 			ECollisionChannel::ECC_Visibility
 		))
 		{
-			//DrawDebugBox(GetWorld(), HitResult.Location, FVector(10, 10, 10), FColor::Blue, false, 5.f);
-			//DrawDebugSphere(GetWorld(), HitResult.Location, 5.f, 15, FColor::Red, true, 5.f);
-			//DrawDebugLine(GetWorld(), HitResult.Location, HitResult.ImpactNormal, FColor::Red, true);
 			UWorld* const World = GetWorld();
 			if (World != nullptr)
 			{
 				auto ThrowStartLocation = FPMesh->GetSocketLocation(FName("ThrowableItem"));
 				auto ThrowStartRotation = FPMesh->GetSocketRotation(FName("ThrowableItem"));
 				//TODO Item should be a subclass of a ThrowableItem class, the item should be set in Blueprint as the currently equipped throwable item
-				DrawDebugSphere(GetWorld(), ThrowStartLocation, 5.f, 15, FColor::Red, true, 5.f);
 				auto ThrownItem = World->SpawnActor<AHarpoonTrap>(ThrowableItemClass, ThrowStartLocation, FPCamera->GetComponentRotation());
 				ThrownItem->LaunchItem(ThrowStartLocation, HitResult.Location);
 			}
@@ -232,4 +232,9 @@ bool AMannequin::GetAimDirection(FVector& AimDirection) const
 	}
 
 	return false;
+}
+
+USceneComponent* AMannequin::GetAttachmentPoint() const
+{
+	return AttachmentPoint;
 }

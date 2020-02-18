@@ -49,6 +49,8 @@ public:
 
 	bool GetAimDirection(FVector& AimDirection) const;
 
+	class USceneComponent* GetAttachmentPoint() const;
+
 private:
 	//Pawn Mesh, 1st person view
 	UPROPERTY(VisibleDefaultsOnly, Category = "Mesh")
@@ -68,6 +70,9 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "ThrowableItem", meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<class AHarpoonTrap> ThrowableItemClass; //TODO need to make a generic throwable item class
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Inventory", meta = (AllowPrivateAccess = "true"))
+	USceneComponent* AttachmentPoint;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Setup", meta = (AllowPrivateAccess = "true"))
 	class APlayerController* PlayerController;

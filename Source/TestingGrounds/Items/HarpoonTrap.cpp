@@ -6,8 +6,12 @@
 #include "Components/BoxComponent.h"
 #include"../../../Engine/Plugins/Runtime/CableComponent/Source/CableComponent/Classes/CableComponent.h"
 #include "Math/Vector.h"
-
-//TODO need to reparent class to a new ThrowableItem base class
+#include "../Character/Mannequin.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework/Controller.h"
+#include "Components/PrimitiveComponent.h"
+#include "Components/SkeletalMeshComponent.h"
+#include "DrawDebugHelpers.h"
 
 // Sets default values
 AHarpoonTrap::AHarpoonTrap()
@@ -33,38 +37,62 @@ void AHarpoonTrap::BeginPlay()
 void AHarpoonTrap::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-}
 
-//TODO OnHit do this
-FHitResult AHarpoonTrap::AttachTrapToSurface()
-{
-	FHitResult HitResult;
-
-	//bool HitAnchorPoint = GetWorld()->LineTraceSingleByChannel(
-	//	HitResult,
-	//	RayCastStart,
-	//	RayCastEnd,
-	//	ECollisionChannel::ECC_Visibility
-	//);
-
-	return HitResult;
+	if (IsTrapActivated)
+	{
+		ApplyForce();
+	}
 }
 
 void AHarpoonTrap::OrientTrapToSurface(FHitResult HitResult)
 {
+	//TODO this is not exactly correct, but will do for now.
 	FRotator NormalRotation = HitResult.Normal.GetSafeNormal().Rotation();
 	FRotator TrapRotation = TrapBody->GetForwardVector().Rotation();
 	FRotator NecessaryRotation = NormalRotation - TrapRotation;
 	TrapBody->AddWorldRotation(NecessaryRotation);
-	//TODO Orient Trap to so that trap forward vector is normal to plane trap is attached to.
 }
 
-void AHarpoonTrap::FireTrap(AActor* ActorToTrap)
+void AHarpoonTrap::FireTrap(AMannequin* ActorToTrap)
 {
 	//Attach cable component to actor and pull them
 	if (ActorToTrap != nullptr)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Actor that is trapped is %s"), *ActorToTrap->GetName());
+		//check that actor is not the player
+		if (!ActorToTrap->IsPlayerControlled())
+		{
+			IsTrapActivated = true;
+			TrappedActor = ActorToTrap;
+			
+			auto AnchorComp = ActorToTrap->GetAttachmentPoint();
+			DrawDebugSphere(GetWorld(), AnchorComp->GetComponentLocation(), 50.f, 30, FColor::Red, true);
+			Harpoon->SetVisibility(true);
+			Harpoon->SetAttachEndToComponent(AnchorComp);
+		}
+
 	}
-	//restrain trapped actor, maybe make them unconscious
+}
+
+void AHarpoonTrap::ApplyForce()
+{
+	if (TrappedActor != nullptr)
+	{
+		auto AnchorComp = TrappedActor->GetAttachmentPoint();
+		FVector ForceDirection = FindForceDirection(AnchorComp->GetComponentLocation(), TrapBody->GetComponentLocation()).GetSafeNormal();
+
+		auto MovementComponent = Cast<UCharacterMovementComponent>(TrappedActor->GetMovementComponent());
+		if (MovementComponent != nullptr)
+		{
+			MovementComponent->AddForce(ForceDirection * ForceMagnitude);
+
+			//MovementComponent->DisableMovement();
+			TrappedActor->GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+			TrappedActor->GetMesh()->SetAllBodiesSimulatePhysics(true);
+		}
+	}
+}
+
+FVector AHarpoonTrap::FindForceDirection(FVector End, FVector Start)
+{
+	return Start - End;
 }

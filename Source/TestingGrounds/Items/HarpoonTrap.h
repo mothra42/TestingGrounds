@@ -29,16 +29,24 @@ private:
 	UPROPERTY(Category = Trap, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	class UBoxComponent* TriggerBox;
 
+	UPROPERTY(EditDefaultsOnly, Category = Trap)
+	float ForceMagnitude = 2000000.0f;
+
 	UFUNCTION(BlueprintCallable, Category = "Attachment")
 	void OrientTrapToSurface(FHitResult HitResult);
+
+	bool IsTrapActivated = false;
+
+	class AMannequin* TrappedActor;
+
+	FVector FindForceDirection(FVector Start, FVector End);
+
+	void ApplyForce();
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	UFUNCTION(BlueprintCallable, Category = "Trap Placement")
-	FHitResult AttachTrapToSurface();
-
 	UFUNCTION(BlueprintCallable, Category = "Firing")
-	void FireTrap(AActor* ActorToTrap);
+	void FireTrap(AMannequin* ActorToTrap);
 };
