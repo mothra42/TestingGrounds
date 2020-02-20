@@ -27,16 +27,26 @@ private:
 	class UCableComponent* Harpoon;
 
 	UPROPERTY(Category = Trap, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	class UBoxComponent* TriggerBox;
+	class UBoxComponent* FireTriggerBox;
+
+	UPROPERTY(Category = Trap, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	UBoxComponent* TrapTriggerBox;
+
+	UPROPERTY(Category = Trap, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	class USceneComponent* CharacterAttachmentPoint;
 
 	UPROPERTY(EditDefaultsOnly, Category = Trap)
 	float ForceMagnitude = 2000000.0f;
 
-	UFUNCTION(BlueprintCallable, Category = "Attachment")
+	UFUNCTION(BlueprintCallable, Category = Attachment)
 	void OrientTrapToSurface(FHitResult HitResult);
+
+	UFUNCTION(BlueprintCallable, Category = Attachment)
+	void AttachActorToTrap();
 
 	bool IsTrapActivated = false;
 
+	UPROPERTY(Category = Trap, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	class AMannequin* TrappedActor;
 
 	FVector FindForceDirection(FVector Start, FVector End);

@@ -13,6 +13,7 @@
 #include "Weapons/Gun.h"
 #include "Items/HarpoonTrap.h"
 #include "Components/SceneComponent.h"
+#include "Components/SkeletalMeshComponent.h"
 #include "DrawDebugHelpers.h"
 
 // Sets default values
@@ -107,7 +108,7 @@ void AMannequin::PullTrigger()
 	GetAimDirection(AimDirection);
 
 	HeldGun->OnFire(AimDirection);
-	ThrowItem(nullptr); //Just For Testing;
+	ThrowItem(nullptr); //TODO add own control binding for using items
 }
 
 void AMannequin::ReleaseTrigger()
@@ -237,4 +238,9 @@ bool AMannequin::GetAimDirection(FVector& AimDirection) const
 USceneComponent* AMannequin::GetAttachmentPoint() const
 {
 	return AttachmentPoint;
+}
+
+USkeletalMeshComponent* AMannequin::GetThirdPersonMeshComponent() const
+{
+	return Super::GetMesh();
 }

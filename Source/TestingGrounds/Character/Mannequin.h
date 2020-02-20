@@ -51,10 +51,12 @@ public:
 
 	class USceneComponent* GetAttachmentPoint() const;
 
+	class USkeletalMeshComponent* GetThirdPersonMeshComponent() const;
+
 private:
 	//Pawn Mesh, 1st person view
 	UPROPERTY(VisibleDefaultsOnly, Category = "Mesh")
-	class USkeletalMeshComponent* FPMesh;
+	USkeletalMeshComponent* FPMesh;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera", meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* FPCamera;
