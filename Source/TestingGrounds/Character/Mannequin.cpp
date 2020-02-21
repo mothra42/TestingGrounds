@@ -76,6 +76,7 @@ void AMannequin::BeginPlay()
 	{
 		InputComponent->BindAction("Fire", IE_Pressed, this, &AMannequin::PullTrigger);
 		InputComponent->BindAction("Fire", IE_Released, this, &AMannequin::ReleaseTrigger);
+		InputComponent->BindAction("ThrowItem", IE_Pressed, this, &AMannequin::ThrowItem);
 	}
 }
 
@@ -108,7 +109,6 @@ void AMannequin::PullTrigger()
 	GetAimDirection(AimDirection);
 
 	HeldGun->OnFire(AimDirection);
-	ThrowItem(nullptr); //TODO add own control binding for using items
 }
 
 void AMannequin::ReleaseTrigger()
@@ -140,7 +140,7 @@ void AMannequin::PickupWeapon(AGun* NewWeapon)
 	}
 }
 
-void AMannequin::ThrowItem(AActor* Item)
+void AMannequin::ThrowItem()
 {
 	FVector AimDirection;
 	if (GetAimDirection(AimDirection))

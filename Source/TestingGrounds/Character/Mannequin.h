@@ -42,7 +42,7 @@ public:
 	void PickupWeapon(AGun* NewWeapon);
 
 	UFUNCTION(BlueprintCallable, Category = "Item")
-	void ThrowItem(AActor* Item);
+	void ThrowItem();
 
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
 	void SwitchHeldWeapon(AGun* NewHeldWeapon);
