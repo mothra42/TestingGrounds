@@ -79,6 +79,7 @@ void AMannequin::BeginPlay()
 		InputComponent->BindAction("Fire", IE_Released, this, &AMannequin::ReleaseTrigger);
 		InputComponent->BindAction("ThrowItem", IE_Pressed, this, &AMannequin::ThrowItem);
 		InputComponent->BindAction("UseGrapplingHook", IE_Pressed, this, & AMannequin::UseGrappleHookRetraction);
+		InputComponent->BindAction("UseGrapplingHook", IE_Released, this, &AMannequin::DisableGrappleHookRetraction);
 	}
 }
 
@@ -249,10 +250,18 @@ USkeletalMeshComponent* AMannequin::GetThirdPersonMeshComponent() const
 
 void AMannequin::UseGrappleHookRetraction()
 {
-	UE_LOG(LogTemp, Warning, TEXT("mannequin method is working"));
 	AGrapplingGun* GrapplingGun = Cast<AGrapplingGun>(HeldGun);
 	if (GrapplingGun != nullptr)
 	{
-		GrapplingGun->ApplyRetractionForce();
+		GrapplingGun->IsRetractionForceBeingApplied = true;
+	}
+}
+
+void AMannequin::DisableGrappleHookRetraction()
+{
+	AGrapplingGun* GrapplingGun = Cast<AGrapplingGun>(HeldGun);
+	if (GrapplingGun != nullptr)
+	{
+		GrapplingGun->IsRetractionForceBeingApplied = false;
 	}
 }

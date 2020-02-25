@@ -92,4 +92,6 @@ private:
 	void StoreWeapon(AGun* Weapon);
 
 	void UseGrappleHookRetraction();
+
+	void DisableGrappleHookRetraction();
 };

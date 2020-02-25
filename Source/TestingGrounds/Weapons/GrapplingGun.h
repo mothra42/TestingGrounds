@@ -15,6 +15,9 @@ class TESTINGGROUNDS_API AGrapplingGun : public AGun
 	GENERATED_BODY()
 	
 	public:
+
+		bool IsRetractionForceBeingApplied = false;
+
 		AGrapplingGun();
 
 		virtual void Tick(float DeltaTime) override;

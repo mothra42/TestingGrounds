@@ -22,6 +22,11 @@ AGrapplingGun::AGrapplingGun()
 void AGrapplingGun::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if (IsRetractionForceBeingApplied)
+	{
+		ApplyRetractionForce();
+	}
 }
 
 void AGrapplingGun::OnFire(FVector AimDirection)
@@ -80,7 +85,7 @@ void AGrapplingGun::ApplyForceToCharacter()
 			if (MovementComponent != nullptr)
 			{
 				MovementComponent->AddForce(CalculateForce());
-				MovementComponent->AddForce(PlayerCharacter->GetActorForwardVector() * 50000);
+				MovementComponent->AddForce(PlayerCharacter->GetActorForwardVector() * 50000); //TODO make configurable in BP
 				float CableLength = CableComponent->CableLength;
 			}
 		}
@@ -98,8 +103,6 @@ FVector AGrapplingGun::CalculateForce()
 
 void AGrapplingGun::ApplyRetractionForce()
 {
-	//TODO make this apply on every tick
-	UE_LOG(LogTemp, Warning, TEXT("trying to work in grappling gun"))
 	if (PlayerCharacter != nullptr)
 	{
 		FVector PlayerLocation = PlayerCharacter->GetActorLocation();
@@ -112,7 +115,7 @@ void AGrapplingGun::ApplyRetractionForce()
 			auto MovementComponent = Cast<UCharacterMovementComponent>(Character->GetMovementComponent());
 			if (MovementComponent != nullptr)
 			{
-				MovementComponent->AddForce(ForceDirection * 50000000);
+				MovementComponent->AddForce(ForceDirection * 5000000); //TODO make configurable in BP
 				float CableLength = CableComponent->CableLength;
 			}
 		}
