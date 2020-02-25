@@ -11,6 +11,7 @@
 #include "GameFramework/PlayerController.h"
 #include "../TestingGroundsHUD.h"
 #include "Weapons/Gun.h"
+#include "Weapons/GrapplingGun.h"
 #include "Items/HarpoonTrap.h"
 #include "Components/SceneComponent.h"
 #include "Components/SkeletalMeshComponent.h"
@@ -77,6 +78,7 @@ void AMannequin::BeginPlay()
 		InputComponent->BindAction("Fire", IE_Pressed, this, &AMannequin::PullTrigger);
 		InputComponent->BindAction("Fire", IE_Released, this, &AMannequin::ReleaseTrigger);
 		InputComponent->BindAction("ThrowItem", IE_Pressed, this, &AMannequin::ThrowItem);
+		InputComponent->BindAction("UseGrapplingHook", IE_Pressed, this, & AMannequin::UseGrappleHookRetraction);
 	}
 }
 
@@ -243,4 +245,14 @@ USceneComponent* AMannequin::GetAttachmentPoint() const
 USkeletalMeshComponent* AMannequin::GetThirdPersonMeshComponent() const
 {
 	return Super::GetMesh();
+}
+
+void AMannequin::UseGrappleHookRetraction()
+{
+	UE_LOG(LogTemp, Warning, TEXT("mannequin method is working"));
+	AGrapplingGun* GrapplingGun = Cast<AGrapplingGun>(HeldGun);
+	if (GrapplingGun != nullptr)
+	{
+		GrapplingGun->ApplyRetractionForce();
+	}
 }

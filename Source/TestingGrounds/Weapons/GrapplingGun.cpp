@@ -95,3 +95,26 @@ FVector AGrapplingGun::CalculateForce()
 	FVector GrappleForce = (FVector::DotProduct(PlayerVelocity, DistanceVector) * NormalizedDistanceVector) * -2.0;
 	return GrappleForce;
 }
+
+void AGrapplingGun::ApplyRetractionForce()
+{
+	//TODO make this apply on every tick
+	UE_LOG(LogTemp, Warning, TEXT("trying to work in grappling gun"))
+	if (PlayerCharacter != nullptr)
+	{
+		FVector PlayerLocation = PlayerCharacter->GetActorLocation();
+
+		FVector ForceDirection = (AnchorPoint - PlayerLocation).GetSafeNormal();
+
+		auto Character = Cast<ACharacter>(PlayerCharacter);
+		if (Character != nullptr)
+		{
+			auto MovementComponent = Cast<UCharacterMovementComponent>(Character->GetMovementComponent());
+			if (MovementComponent != nullptr)
+			{
+				MovementComponent->AddForce(ForceDirection * 50000000);
+				float CableLength = CableComponent->CableLength;
+			}
+		}
+	}	
+}

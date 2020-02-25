@@ -23,6 +23,8 @@ class TESTINGGROUNDS_API AGrapplingGun : public AGun
 
 		virtual void OnReleaseTrigger() override;
 
+		void ApplyRetractionForce();
+
 	private:
 		UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Cable", meta = (AllowPrivateAccess = "true"))
 		class UCableComponent* CableComponent;
