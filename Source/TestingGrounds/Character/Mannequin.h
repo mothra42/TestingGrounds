@@ -31,6 +31,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 	TSubclassOf<class AGun> GunBlueprint;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+	TSubclassOf<class AGun> StoredGunBlueprint;
+
 	//Fire Method
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	void PullTrigger();

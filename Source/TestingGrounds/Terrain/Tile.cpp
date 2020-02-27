@@ -39,22 +39,27 @@ void ATile::PositionNavMeshBoundsVolume()
 
 void ATile::PlaceActors(TSubclassOf<AActor> ToSpawn, int MinSpawn, int MaxSpawn, float Radius, bool ShouldScale, float MinScale, float MaxScale)
 {
-	int NumberToSpawn = FMath::RandRange(MinSpawn, MaxSpawn);
-	
-	for (size_t i = 0; i < NumberToSpawn; i++)
+	//make it so not all objects spawn on every tile to avoid things being too busy
+	bool RandBool = FMath::RandBool();
+	if (RandBool)
 	{
-		FVector SpawnLocation;
-		FVector Scale = FVector(1,1,1);
+		int NumberToSpawn = FMath::RandRange(MinSpawn, MaxSpawn);
 
-		float RandScale = FMath::RandRange(MinScale, MaxScale);
-		if (FindEmptyLocation(SpawnLocation, Radius * RandScale))
+		for (size_t i = 0; i < NumberToSpawn; i++)
 		{
-			if (ShouldScale)
+			FVector SpawnLocation;
+			FVector Scale = FVector(1, 1, 1);
+
+			float RandScale = FMath::RandRange(MinScale, MaxScale);
+			if (FindEmptyLocation(SpawnLocation, Radius * RandScale))
 			{
-				Scale = Scale * RandScale;
+				if (ShouldScale)
+				{
+					Scale = Scale * RandScale;
+				}
+				float RandRotation = FMath::RandRange(-180.f, 180.f);
+				PlaceActor(ToSpawn, SpawnLocation, RandRotation, Scale);
 			}
-			float RandRotation = FMath::RandRange(-180.f, 180.f);
-			PlaceActor(ToSpawn, SpawnLocation, RandRotation, Scale);
 		}
 	}
 }
@@ -118,8 +123,6 @@ bool ATile::bCanSpawnAtLocation(FVector Location, float Radius)
 		ECollisionChannel::ECC_GameTraceChannel2,
 		FCollisionShape::MakeSphere(Radius)
 	);
-	//FColor ResultColor = HasHit ? FColor::Red : FColor::Green;
-	//DrawDebugCapsule(GetWorld(), GlobalLocation, 0, Radius, FQuat::Identity, ResultColor, true, 100);
 	return !HasHit;
 }
 

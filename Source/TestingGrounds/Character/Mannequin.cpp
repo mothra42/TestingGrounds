@@ -51,29 +51,38 @@ AMannequin::AMannequin()
 void AMannequin::BeginPlay()
 {
 	Super::BeginPlay();
-	if (GunBlueprint == NULL)
+	if (GunBlueprint == nullptr || StoredGunBlueprint == nullptr)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("No Gun Blueprint"));
+		UE_LOG(LogTemp, Warning, TEXT("No Gun Blueprint Or No Stored Gun Blueprint"));
 		return;
 	}
 
 	HeldGun = GetWorld()->SpawnActor<AGun>(GunBlueprint);
 	HeldGun->DeactivateRotationComponent();
 	HeldGun->DeactivateCapsuleComponent();
+
+	StoredGun = GetWorld()->SpawnActor<AGrapplingGun>(StoredGunBlueprint);
+	StoredGun->DeactivateRotationComponent();
+	StoredGun->DeactivateCapsuleComponent();
+
 	InventoryComponent->AddWeapon(HeldGun);
+	InventoryComponent->AddWeapon(StoredGun);
+
 	if (IsPlayerControlled())
 	{
 		HeldGun->AttachToComponent(FPMesh, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
+		StoredGun->AttachToComponent(FPMesh, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("Backpack"));
 	}
 	else
 	{
 		HeldGun->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
+		StoredGun->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("Backpack"));
 	}
 
 	HeldGun->FPAnimInstance = FPMesh->GetAnimInstance();
 	HeldGun->TPAnimInstance = GetMesh()->GetAnimInstance();
 
-	if (InputComponent != NULL)
+	if (InputComponent != nullptr)
 	{
 		InputComponent->BindAction("Fire", IE_Pressed, this, &AMannequin::PullTrigger);
 		InputComponent->BindAction("Fire", IE_Released, this, &AMannequin::ReleaseTrigger);
