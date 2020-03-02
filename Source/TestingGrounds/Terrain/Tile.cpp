@@ -3,9 +3,9 @@
 
 #include "Tile.h"
 #include "Public/WorldCollision.h"
-#include "DrawDebugHelpers.h"
 #include "Engine/Public/EngineUtils.h"
 #include "AI/NavigationSystemBase.h"
+#include "Character/Mannequin.h"
 #include "ActorPool.h"
 
 // Sets default values
@@ -89,6 +89,12 @@ void ATile::PlaceActor(TSubclassOf<AActor> ToSpawn, FVector SpawnPoint, float Ro
 	Spawned->AttachToActor(this, FAttachmentTransformRules(EAttachmentRule::KeepRelative, false));
 	Spawned->SetActorRotation(FRotator(0, Rotation, 0));
 	Spawned->SetActorScale3D(Scale);
+
+	AMannequin* SpawnedMannequin = Cast<AMannequin>(Spawned);
+	if (SpawnedMannequin != nullptr)
+	{
+		EnemyArray.Add(SpawnedMannequin);
+	}
 }
 
 // Called when the game starts or when spawned

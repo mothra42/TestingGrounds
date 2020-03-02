@@ -34,6 +34,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 	TSubclassOf<class AGun> StoredGunBlueprint;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Character Death")
+	bool IsCharacterDead = false;
+
 	//Fire Method
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	void PullTrigger();

@@ -53,6 +53,9 @@ private:
 
 	UActorPool* Pool;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Unlock", meta = (AllowPrivateAccess = "true"))
+	TArray<class AMannequin*> EnemyArray;
+
 	AActor* NavMeshBoundsVolume;
 
 };
